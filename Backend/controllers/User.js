@@ -14,7 +14,17 @@ export const getUsers = (req, res) => {
   });
 };
 
-
+export const getuserbyemail = (req,res) => {
+  const {email} = req.body;
+  db.query("Select id, name, email, phone, location, first_active, last_update FROM users WHERE email = ? ",[email],(err,results)=>{
+    if(err) return res.status(500).json({error:err.message});
+    if (results.length > 0) {
+      res.json({ exists: true, user: results[0] }); 
+    } else {
+      res.json({ exists: false });
+    }
+  })
+}
 export const getUserById = (req, res) => {
   const { id } = req.params;
   db.query("SELECT id, name, email, phone, location, first_active, last_update FROM users WHERE id = ?", [id], (err, results) => {

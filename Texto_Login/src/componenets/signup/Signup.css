@@ -1,9 +1,68 @@
 /* Container */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, .app {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background: #fff;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar .logo {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.navbar nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+}
+.signbtn{
+  background: #c27edf;
+  color: white;
+  border: 10px;
+  padding: 8px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block; 
+}
+
+
+/* Banner */
+.banner {
+  background: #def69b;
+  padding: 40px;
+  text-align: center;
+}
+
+.banner h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
 .signup-container {
+    
+    margin-top: 40px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    align-items:center;
+    justify-content:center;
+  
     background-color: #f9fafb;
   }
   
@@ -50,7 +109,7 @@
   /* Button */
   .signup-btn {
     padding: 0.75rem;
-    background-color: #10b981;
+    background-color: #c27edf;
     color: white;
     font-size: 1rem;
     font-weight: bold;
@@ -70,3 +129,40 @@
     color: #1f2937;
     font-size: large;
   }
+  .footer {
+    background: #f0f2f5;
+    padding: 30px 50px;
+    margin-top: 40px;
+    
+  }
+  
+  .footer-logo {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .footer-grid {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+  }
+  
+  .footer-grid h4 {
+    margin-bottom: 10px;
+  }
+  
+  .footer-grid a {
+    display: block;
+    margin-bottom: 6px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .footer-bottom {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+  }
+  

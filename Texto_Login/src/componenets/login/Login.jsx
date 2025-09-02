@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,43 +27,132 @@ const Login = () => {
       })
       .catch((err) => console.error(err));
   };
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,4}$/.test(email);
 
+useEffect(() => {
+  if (!email || !isValidEmail(email)){
+    return 
+  } ;
+    if (!email) {
+      setEmailExists(false);
 
+      setError("");
+      return;
+    }
+
+    // Call API when email changes
+    fetch("http://localhost:5000/users/getuser", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Server error: " + res.status);
+        console.log("fetch is working")
+        return res.json();
+      })
+      .then((json) => {
+        if (json && json.exists) {  // assume API returns { exists: true/false }
+          setEmailExists(true);
+          setError("");
+          alert("Your Email is There")
+        } else {
+          setEmailExists(false);
+          setError("❌ Email not found in database");
+          alert("❌Email not found");
+        }
+      })
+      .catch((err) => {
+        setEmailExists(false);
+        setError("⚠️ " + err.message);
+      });
+      console.log(emailExists)
+      console.log("useeffect is working")
+  }, [email]);
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2 className="login-title">Login</h2>
-        <form onSubmit={handleSubmit} className="login-form">
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="login-input"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={pass}
-            onChange={(e) => setPass(e.target.value)}
-            className="login-input"
-            required
-          />
-          <button type="submit" className="login-btn">
-            Login
-          </button>
-        </form>
+   
 
-        {/* ✅ Link to signup */}
-        <p className="login-footer">
-          Don’t have an account?{" "}
-          <Link to="/signup" className="login-link">
-            Create Account
-          </Link>
-        </p>
+    <div className="app">
+    {/* Navbar */}
+    <header className="navbar">
+      <div className="logo">Texto</div>
+      <nav>
+        <a href="#">About Us</a>
+        <a href="#">Contact Us</a>
+        
+      </nav>
+
+      <Link to="/signup" className="signbtn">Signup</Link>    </header>
+
+    {/* Login Banner */}
+    <section className="banner">
+      <h2>Log in to your account</h2>
+    </section>
+
+  
+
+    {/* Login Form */}
+    <form onSubmit={handleSubmit} className="login-form">
+      <input type="text" value={email} placeholder="User Id" onChange={(e)=>setEmail(e.target.value)} />
+      {email ? emailExists ? <input type="password" value={pass} onChange={(e) => {setPass(e.target.value)}} placeholder="Password" /> : <p>EMAIL DOES NOT EXISTS</p>:<p>Enter Your email</p>}
+
+      {/* <div className="captcha">
+        <input type="checkbox" />
+        <span>I’m not a robot (captcha here)</span>
+      </div> */}
+
+      {emailExists?<div  className="remember">
+        <input type="checkbox" />
+        <label>Remember me</label>
+      </div>:<p></p>}
+
+     {emailExists? <button  type="submit" className="login-btn">Login</button>:<p></p>}
+     {emailExists?<div className="form-links">
+        <a href="#">Forgot Password?</a> |{" "}
+        <span>
+          Don’t have an account? <a href="/signup">Signup</a>
+        </span>
+      </div>:<p></p>}
+    </form>
+
+    {/* Footer */}
+    <footer className="footer">
+      <div className="footer-logo">Textto</div>
+      <div className="footer-grid">
+        <div>
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Press & Media</a>
+          <a href="#">Customers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div>
+          <h4>Docs</h4>
+          <a href="#">API</a>
+          <a href="#">Help Document</a>
+          <a href="#">Forum</a>
+        </div>
+        <div>
+          <h4>Follow us</h4>
+          <a href="#">LinkedIn</a>
+          <a href="#">Twitter</a>
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">YouTube</a>
+          <a href="#">Medium</a>
+        </div>
       </div>
-    </div>
+
+      <div className="footer-bottom">
+        <p className="legal">
+          Privacy | Security | Cookies | Terms | DLT
+        </p>
+        {/* <p>© 2022 Gupshup. All rights reserved.</p> */}
+      </div>
+    </footer>
+  </div>
+
+
   );
 };
 
