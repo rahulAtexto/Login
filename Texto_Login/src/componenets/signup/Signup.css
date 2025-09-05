@@ -42,6 +42,9 @@ body, .app {
   display: inline-block; 
 }
 
+.signbtn:hover {
+  background-color: #059669;
+}
 
 /* Banner */
 .banner {

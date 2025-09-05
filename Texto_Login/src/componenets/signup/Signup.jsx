@@ -6,34 +6,34 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const Signup = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [location, setLocation] = useState("");
-  const [password, setPassword] = useState("");
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [phone, setPhone] = useState("");
+  // const [location, setLocation] = useState("");
+  // const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-    fetch("http://localhost:5000/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone, location, password }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.id) {
-          alert("Signup Successful ✅, please login.");
-          navigate("/")
-        } else {
-          alert(data.message || "Signup Failed ❌");
-        }
-      })
-      .catch((err) => console.error(err));
-  };
+  //   fetch("http://localhost:5000/users", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ name, email, phone, location, password }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.id) {
+  //         alert("Signup Successful ✅, please login.");
+  //         navigate("/")
+  //       } else {
+  //         alert(data.message || "Signup Failed ❌");
+  //       }
+  //     })
+  //     .catch((err) => console.error(err));
+  // };
 
   
   const validationSchema = Yup.object({
@@ -49,6 +49,8 @@ const Signup = () => {
     phone: Yup.string()
       .matches(/^\d{10}$/, "Phone must be 10 digits")
       .required("Phone number is required"),
+      location:Yup.string()
+      .required("Location is required"),
   });
 
   return (

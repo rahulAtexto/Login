@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
@@ -8,8 +8,18 @@ const Login = () => {
   const [emailExists, setEmailExists] = useState(false);
   const [error, setError] = useState("");
 
+   const navigate = useNavigate();
+
+
+   const handleGoogleLogin = () => {
+    // Hit backend /auth/google → redirects to Google → comes back
+    window.location.href = "http://localhost:5000/auth/google";
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    
 
     fetch("http://localhost:5000/users/login", {
       method: "POST",
@@ -20,7 +30,9 @@ const Login = () => {
       .then((data) => {
         if (data.token) {
           alert("Login Successful ✅");
+          console.log(data.token);
           localStorage.setItem("token", data.token);
+          navigate('/home');
         } else {
           alert(data.message || "Login Failed ❌");
         }
@@ -93,7 +105,7 @@ useEffect(() => {
 
     {/* Login Form */}
     <form onSubmit={handleSubmit} className="login-form">
-      <input type="text" value={email} placeholder="User Id" onChange={(e)=>setEmail(e.target.value)} />
+      <input type="text" value={email} placeholder="Enter Your Email" onChange={(e)=>setEmail(e.target.value)} />
       {email ? emailExists ? <input type="password" value={pass} onChange={(e) => {setPass(e.target.value)}} placeholder="Password" /> : <p>EMAIL DOES NOT EXISTS</p>:<p>Enter Your email</p>}
 
       {/* <div className="captcha">
@@ -113,6 +125,21 @@ useEffect(() => {
           Don’t have an account? <a href="/signup">Signup</a>
         </span>
       </div>:<p></p>}
+
+      <button
+        onClick={handleGoogleLogin}
+        style={{
+          backgroundColor: "#db4437",
+          color: "white",
+          padding: "10px 20px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          fontSize: "16px"
+        }}
+      >
+        Sign in with Google
+      </button>
     </form>
 
     {/* Footer */}
